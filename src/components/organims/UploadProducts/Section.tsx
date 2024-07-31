@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useProduct } from '../../../auth/ProductProvider'; // Importa el hook del ProductProvider
+import '../../../assets/styles/UploadProducts.css';
 
 const ProductForm: React.FC = () => {
   const { createProduct } = useProduct(); // Obtén la función createProduct del ProductProvider
@@ -52,105 +53,108 @@ const ProductForm: React.FC = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div>
-        <label htmlFor="id">ID</label>
-        <input
-          id="id"
-          name="id"
-          type="number"
-          onChange={formik.handleChange}
-          value={formik.values.id}
-        />
-      </div>
+    <div className="form-container">
+      <form onSubmit={formik.handleSubmit}>
+        <h1>Crear Productos</h1>
+        <div>
+          <label htmlFor="id">ID</label>
+          <input
+            id="id"
+            name="id"
+            type="number"
+            onChange={formik.handleChange}
+            value={formik.values.id}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="name">Nombre</label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.name}
-        />
-        {formik.touched.name && formik.errors.name ? (
-          <div>{formik.errors.name}</div>
-        ) : null}
-      </div>
+        <div>
+          <label htmlFor="name">Nombre</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.name}
+          />
+          {formik.touched.name && formik.errors.name ? (
+            <div className="error">{formik.errors.name}</div>
+          ) : null}
+        </div>
 
-      <div>
-        <label htmlFor="description">Descripción</label>
-        <input
-          id="description"
-          name="description"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.description}
-        />
-        {formik.touched.description && formik.errors.description ? (
-          <div>{formik.errors.description}</div>
-        ) : null}
-      </div>
+        <div>
+          <label htmlFor="description">Descripción</label>
+          <input
+            id="description"
+            name="description"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.description}
+          />
+          {formik.touched.description && formik.errors.description ? (
+            <div className="error">{formik.errors.description}</div>
+          ) : null}
+        </div>
 
-      <div>
-        <label htmlFor="price">Precio</label>
-        <input
-          id="price"
-          name="price"
-          type="number"
-          onChange={formik.handleChange}
-          value={formik.values.price}
-        />
-        {formik.touched.price && formik.errors.price ? (
-          <div>{formik.errors.price}</div>
-        ) : null}
-      </div>
+        <div>
+          <label htmlFor="price">Precio</label>
+          <input
+            id="price"
+            name="price"
+            type="number"
+            onChange={formik.handleChange}
+            value={formik.values.price}
+          />
+          {formik.touched.price && formik.errors.price ? (
+            <div className="error">{formik.errors.price}</div>
+          ) : null}
+        </div>
 
-      <div>
-        <label htmlFor="quantity">Cantidad</label>
-        <input
-          id="quantity"
-          name="quantity"
-          type="number"
-          onChange={formik.handleChange}
-          value={formik.values.quantity}
-        />
-        {formik.touched.quantity && formik.errors.quantity ? (
-          <div>{formik.errors.quantity}</div>
-        ) : null}
-      </div>
+        <div>
+          <label htmlFor="quantity">Cantidad</label>
+          <input
+            id="quantity"
+            name="quantity"
+            type="number"
+            onChange={formik.handleChange}
+            value={formik.values.quantity}
+          />
+          {formik.touched.quantity && formik.errors.quantity ? (
+            <div className="error">{formik.errors.quantity}</div>
+          ) : null}
+        </div>
 
-      <div>
-        <label htmlFor="category">Categoría</label>
-        <select
-          id="category"
-          name="category"
-          onChange={formik.handleChange}
-          value={formik.values.category}
-        >
-          <option value="comida">Comida</option>
-          <option value="bebida">Bebida</option>
-          <option value="postre">Postre</option>
-        </select>
-        {formik.touched.category && formik.errors.category ? (
-          <div>{formik.errors.category}</div>
-        ) : null}
-      </div>
+        <div>
+          <label htmlFor="category">Categoría</label>
+          <select
+            id="category"
+            name="category"
+            onChange={formik.handleChange}
+            value={formik.values.category}
+          >
+            <option value="comida">Comida</option>
+            <option value="bebida">Bebida</option>
+            <option value="postre">Postre</option>
+          </select>
+          {formik.touched.category && formik.errors.category ? (
+            <div className="error">{formik.errors.category}</div>
+          ) : null}
+        </div>
 
-      <div>
-        <label htmlFor="img">Imagen</label>
-        <input
-          id="img"
-          name="img"
-          type="file"
-          onChange={(event) => {
-            formik.setFieldValue('img', event.currentTarget.files ? event.currentTarget.files[0] : null);
-          }}
-        />
-      </div>
+        <div>
+          <label htmlFor="img">Imagen</label>
+          <input
+            id="img"
+            name="img"
+            type="file"
+            onChange={(event) => {
+              formik.setFieldValue('img', event.currentTarget.files ? event.currentTarget.files[0] : null);
+            }}
+          />
+        </div>
 
-      <button type="submit">Crear Producto</button>
-    </form>
+        <button type="submit">Crear Producto</button>
+      </form>
+    </div>
   );
 };
 

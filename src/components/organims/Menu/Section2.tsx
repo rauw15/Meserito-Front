@@ -25,7 +25,7 @@ export default function Menu() {
 
   const obtenerProductos = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/products/getAll");
+      const response = await axios.get("https://meserito-backend.onrender.com/products/getAll");
       const productosComida = response.data.filter(
         (producto: any) => producto.category === "comida"
       );

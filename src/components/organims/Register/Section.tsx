@@ -18,7 +18,7 @@ export default function SectionRegister() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/users/create', {
+      const response = await axios.post('https://meserito-backend.onrender.com/users/create', {
         id: Date.now(),
         name: username,
         email,

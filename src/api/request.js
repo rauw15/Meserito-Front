@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:3000";
+const API = "https://meserito-backend.onrender.com";
 
 // Rutas de usuarios
 export const registerRequest = (userData) =>
@@ -47,3 +47,25 @@ export const obtenerProductosRequest = () =>
 // Rutas de mensajes
 export const sendMessageRoute = `${API}/api/messages/addmsg`;
 export const receiveMessageRoute = `${API}/api/messages/getmsg`;
+
+// Rutas de comandos del robot
+export const moveForwardRequest = (value) =>
+  axios.post(`${API}/api/robot/move_forward, { action: 'move_forward', value }`);
+
+export const stopRequest = () =>
+  axios.post(`${API}/api/robot/stop, { action: 'stop' }`);
+
+export const rotateLeftRequest = (value) =>
+  axios.post(`${API}/api/robot/rotate_left, { action: 'rotate_left', value }`);
+
+export const rotateRightRequest = (value) =>
+  axios.post(`${API}/api/robot/rotate_right, { action: 'rotate_right', value }`);
+
+export const searchColorRequest = (color) =>
+  axios.post(`${API}/api/robot/search_color, { action: 'search_color', value: color }`);
+
+export const returnRequest = () =>
+  axios.post(`${API}/api/robot/return, { action: 'return' }`);
+
+export const checkDistanceRequest = () =>
+  axios.post(`${API}/api/robot/check_distance, { action: 'check_distance' }`);

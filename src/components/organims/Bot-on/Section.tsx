@@ -24,7 +24,7 @@ const TableSelection: React.FC = () => {
   const handleSendToRobot = async () => {
     if (selectedTable) {
       try {
-        const response = await axios.post('http://localhost:3000/sendToRobot', {
+        const response = await axios.post('https://meserito-backend.onrender.com/sendToRobot', {
           tableId: selectedTable.id,
           color: selectedTable.color,
         });
