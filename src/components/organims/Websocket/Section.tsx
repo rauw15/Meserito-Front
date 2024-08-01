@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../auth/AuthProvider';
 import ReconnectingWebSocket from '../reconnecting-websocket';
 
-const socket = new ReconnectingWebSocket('wss://meserito-backend.onrender.com:3001');
+const socket = new ReconnectingWebSocket('wss://meserito-backend.onrender.com');
 
 const ChatComponent: React.FC = () => {
   const [nuevoMensaje, setNuevoMensaje] = useState('');
