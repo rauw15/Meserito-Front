@@ -1,5 +1,3 @@
-// ChatComponent.tsx
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../auth/AuthProvider';
 import ReconnectingWebSocket from '../reconnecting-websocket';
@@ -15,7 +13,7 @@ const ChatComponent: React.FC = () => {
   const { isAuthenticated, logout } = useAuth();
 
   const enviarMensaje = () => {
-    if (nuevoMensaje.trim() !== '') {
+    if (nuevoMensaje.trim() !== '' && isConnected) {
       const userEmail = isAuthenticated ? 'AuthenticatedUser@example.com' : 'Usuario';
       const message = JSON.stringify({ type: 'chat_message', user: userEmail, message: nuevoMensaje, isAdmin: false });
       socket.send(message);
@@ -23,7 +21,7 @@ const ChatComponent: React.FC = () => {
       setMensajes([...mensajes, { user: userEmail, message: nuevoMensaje, isAdmin: false }]);
       setNuevoMensaje('');
     } else {
-      console.log('No está autenticado. No se puede enviar el mensaje.');
+      console.log('No está autenticado o no está conectado. No se puede enviar el mensaje.');
     }
   };
 

@@ -1,5 +1,3 @@
-// AdminChatComponent.tsx
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../auth/AuthProvider';
 import ReconnectingWebSocket from '../reconnecting-websocket';
@@ -15,12 +13,14 @@ const AdminChatComponent: React.FC = () => {
   const auth = useAuth();
 
   const enviarMensaje = () => {
-    if (nuevoMensaje.trim() !== '') {
+    if (nuevoMensaje.trim() !== '' && isConnected) {
       const message = JSON.stringify({ type: 'chat_message', user: 'Admin', message: nuevoMensaje, isAdmin: true });
       socket.send(message);
       console.log('Mensaje enviado:', message);
       setMensajes([...mensajes, { user: 'Admin', message: nuevoMensaje, isAdmin: true }]);
       setNuevoMensaje('');
+    } else {
+      console.log('No está conectado. No se puede enviar el mensaje.');
     }
   };
 
