@@ -1,11 +1,11 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useProduct } from '../../../auth/ProductProvider'; // Importa el hook del ProductProvider
+import { useProduct } from '../../../auth/ProductProvider';
 import '../../../assets/styles/UploadProducts.css';
 
 const ProductForm: React.FC = () => {
-  const { createProduct } = useProduct(); // Obtén la función createProduct del ProductProvider
+  const { createProduct } = useProduct();
 
   const formik = useFormik({
     initialValues: {
@@ -15,7 +15,7 @@ const ProductForm: React.FC = () => {
       price: 0,
       quantity: 0,
       category: 'comida',
-      img: null as File | null, // Campo para la imagen, actualizado para TypeScript
+      img: null as File | null,
     },
     validationSchema: Yup.object({
       name: Yup.string().required('Nombre es requerido'),
@@ -31,18 +31,18 @@ const ProductForm: React.FC = () => {
       formData.append('price', values.price.toString());
       formData.append('quantity', values.quantity.toString());
       formData.append('category', values.category);
+      
       if (values.img) {
         formData.append('img', values.img);
       }
 
       try {
-        // Usa createProduct del ProductProvider
         await createProduct({
           id: values.id,
           name: values.name,
           description: values.description,
           price: values.price,
-          imageUrl: '', // Si tienes una lógica para obtener la URL de la imagen, ajústala aquí
+          imageUrl: '',
         });
         alert('Producto creado con éxito');
       } catch (error) {
@@ -56,6 +56,7 @@ const ProductForm: React.FC = () => {
     <div className="form-container">
       <form onSubmit={formik.handleSubmit}>
         <h1>Crear Productos</h1>
+        
         <div>
           <label htmlFor="id">ID</label>
           <input
@@ -76,9 +77,9 @@ const ProductForm: React.FC = () => {
             onChange={formik.handleChange}
             value={formik.values.name}
           />
-          {formik.touched.name && formik.errors.name ? (
+          {formik.touched.name && formik.errors.name && (
             <div className="error">{formik.errors.name}</div>
-          ) : null}
+          )}
         </div>
 
         <div>
@@ -90,9 +91,9 @@ const ProductForm: React.FC = () => {
             onChange={formik.handleChange}
             value={formik.values.description}
           />
-          {formik.touched.description && formik.errors.description ? (
+          {formik.touched.description && formik.errors.description && (
             <div className="error">{formik.errors.description}</div>
-          ) : null}
+          )}
         </div>
 
         <div>
@@ -104,9 +105,9 @@ const ProductForm: React.FC = () => {
             onChange={formik.handleChange}
             value={formik.values.price}
           />
-          {formik.touched.price && formik.errors.price ? (
+          {formik.touched.price && formik.errors.price && (
             <div className="error">{formik.errors.price}</div>
-          ) : null}
+          )}
         </div>
 
         <div>
@@ -118,9 +119,9 @@ const ProductForm: React.FC = () => {
             onChange={formik.handleChange}
             value={formik.values.quantity}
           />
-          {formik.touched.quantity && formik.errors.quantity ? (
+          {formik.touched.quantity && formik.errors.quantity && (
             <div className="error">{formik.errors.quantity}</div>
-          ) : null}
+          )}
         </div>
 
         <div>
@@ -135,9 +136,9 @@ const ProductForm: React.FC = () => {
             <option value="bebida">Bebida</option>
             <option value="postre">Postre</option>
           </select>
-          {formik.touched.category && formik.errors.category ? (
+          {formik.touched.category && formik.errors.category && (
             <div className="error">{formik.errors.category}</div>
-          ) : null}
+          )}
         </div>
 
         <div>
@@ -147,7 +148,8 @@ const ProductForm: React.FC = () => {
             name="img"
             type="file"
             onChange={(event) => {
-              formik.setFieldValue('img', event.currentTarget.files ? event.currentTarget.files[0] : null);
+              const file = event.currentTarget.files?.[0] || null;
+              formik.setFieldValue('img', file);
             }}
           />
         </div>
