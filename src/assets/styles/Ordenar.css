@@ -126,10 +126,17 @@
   transition: all 0.3s ease;
 }
 
-.btn-realizar-orden:hover {
+.btn-realizar-orden:hover:not(:disabled) {
   background: #218838;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.btn-realizar-orden:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Responsive design */
