@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { usePedido } from "../../../auth/PedidoProvider";
 import { useCalificacion } from "../../../auth/CalificacionProvider";
 import CalificacionServicio from "../CalificacionServicio/Section";
+import ConfirmacionPedido from "../ConfirmacionPedido/Section";
 import "../../../assets/styles/Ordenar.css";
 
 export default function Carrito() {
@@ -9,7 +10,9 @@ export default function Carrito() {
   const { getCalificacionByPedido } = useCalificacion();
   const [total, setTotal] = useState(0);
   const [showCalificacion, setShowCalificacion] = useState(false);
+  const [showConfirmacion, setShowConfirmacion] = useState(false);
   const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
+  const [pedidoParaConfirmar, setPedidoParaConfirmar] = useState(null);
 
   useEffect(() => {
     calcularTotal();
@@ -27,8 +30,34 @@ export default function Carrito() {
   };
 
   const handleRealizarOrden = () => {
-    console.log("Orden realizada con éxito!");
+    if (pedidos.length === 0) {
+      alert('No hay productos en el carrito');
+      return;
+    }
+    
+    // Mostrar pantalla de confirmación para el primer pedido
+    const primerPedido = pedidos[0];
+    setPedidoParaConfirmar(primerPedido);
+    setShowConfirmacion(true);
+  };
+
+  const handleConfirmarPedido = () => {
+    console.log("Pedido confirmado:", pedidoParaConfirmar);
+    alert("¡Pedido confirmado con éxito!");
+    setShowConfirmacion(false);
+    setPedidoParaConfirmar(null);
     // Aquí podrías implementar la lógica para procesar el pedido
+  };
+
+  const handleModificarPedido = () => {
+    setShowConfirmacion(false);
+    setPedidoParaConfirmar(null);
+    // El usuario puede regresar y modificar el pedido
+  };
+
+  const handleCancelarConfirmacion = () => {
+    setShowConfirmacion(false);
+    setPedidoParaConfirmar(null);
   };
 
   const handleCalificarPedido = (pedido) => {
@@ -99,8 +128,9 @@ export default function Carrito() {
             <button 
               className="btn-realizar-orden"
               onClick={handleRealizarOrden}
+              disabled={pedidos.length === 0}
             >
-              Realizar Orden
+              {pedidos.length === 0 ? 'Carrito Vacío' : 'Confirmar Pedido'}
             </button>
           </div>
         </>
@@ -111,6 +141,15 @@ export default function Carrito() {
           pedidoId={pedidoSeleccionado?.id}
           onCalificacionCompletada={handleCalificacionCompletada}
           onCerrar={handleCerrarCalificacion}
+        />
+      )}
+
+      {showConfirmacion && pedidoParaConfirmar && (
+        <ConfirmacionPedido
+          pedidoId={pedidoParaConfirmar.id}
+          onConfirmar={handleConfirmarPedido}
+          onModificar={handleModificarPedido}
+          onCancelar={handleCancelarConfirmacion}
         />
       )}
     </div>

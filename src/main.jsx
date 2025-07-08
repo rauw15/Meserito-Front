@@ -22,6 +22,7 @@ import Carrito from './pages/Ordenar';
 import ChatuserPage from './pages/Websocket';
 import ChatAdminPage from './pages/Chatadmin';
 import HistorialCalificacionesPage from './pages/HistorialCalificaciones';
+import ConfirmacionPedidoPage from './pages/ConfirmacionPedido';
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
   {
     path: '/historial-calificaciones',
     element: <HistorialCalificacionesPage/>
+  },
+  {
+    path: '/confirmacion-pedido',
+    element: <ConfirmacionPedidoPage/>
   },
 ]);
 
