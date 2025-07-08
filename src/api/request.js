@@ -85,3 +85,7 @@ export const obtenerCalificacionesRequest = () =>
 
 export const obtenerCalificacionPorPedidoRequest = (pedidoId) =>
   axios.get(`${API}/calificaciones/getByPedido/${pedidoId}`);
+
+// Enviar pedido al robot mesero (ajusta la URL real del robot)
+export const enviarPedidoRobotRequest = (pedidoData) =>
+  axios.post('http://robot-mesero.local/api/pedidos', pedidoData);
