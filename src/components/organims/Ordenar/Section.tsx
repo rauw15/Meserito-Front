@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { usePedido } from "../../../auth/PedidoProvider"; // Actualizado aquí
+import { usePedido } from "../../../auth/PedidoProvider";
+import { useCalificacion } from "../../../auth/CalificacionProvider";
+import CalificacionServicio from "../CalificacionServicio/Section";
+import "../../../assets/styles/Ordenar.css";
 
 export default function Carrito() {
-  const { pedidos, deletePedido } = usePedido(); // Actualizado aquí
+  const { pedidos, deletePedido } = usePedido();
+  const { getCalificacionByPedido } = useCalificacion();
   const [total, setTotal] = useState(0);
+  const [showCalificacion, setShowCalificacion] = useState(false);
+  const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
 
   useEffect(() => {
     calcularTotal();
@@ -12,12 +18,8 @@ export default function Carrito() {
   const calcularTotal = () => {
     let totalPrice = 0;
     pedidos.forEach((pedido) => {
-      // Aquí asumo que `pedido.productIds` se usa para obtener los productos, deberás ajustar esto según tu lógica
-      // Si necesitas detalles de los productos, deberías tener otra forma de obtenerlos.
       totalPrice += pedido.productIds.reduce((acc, productId) => {
-        // Suponiendo que tienes alguna forma de obtener el precio del producto por ID.
-        // Ajusta esta lógica según cómo manejas los precios en tu aplicación.
-        const productPrice = obtenerPrecioDelProducto(productId); // Esta función es un ejemplo
+        const productPrice = obtenerPrecioDelProducto(productId);
         return acc + productPrice;
       }, 0);
     });
@@ -25,10 +27,24 @@ export default function Carrito() {
   };
 
   const handleRealizarOrden = () => {
-    // Lógica para realizar la orden
     console.log("Orden realizada con éxito!");
-    // Puedes enviar los productos al backend para procesar el pedido
-    // Puedes borrar los productos del carrito si es necesario
+    // Aquí podrías implementar la lógica para procesar el pedido
+  };
+
+  const handleCalificarPedido = (pedido) => {
+    setPedidoSeleccionado(pedido);
+    setShowCalificacion(true);
+  };
+
+  const handleCalificacionCompletada = () => {
+    setShowCalificacion(false);
+    setPedidoSeleccionado(null);
+    alert("¡Gracias por tu calificación!");
+  };
+
+  const handleCerrarCalificacion = () => {
+    setShowCalificacion(false);
+    setPedidoSeleccionado(null);
   };
 
   const obtenerPrecioDelProducto = (productId: number) => {
@@ -38,20 +54,65 @@ export default function Carrito() {
   };
 
   return (
-    <div>
+    <div className="carrito-container">
       <h2>Carrito de Compras</h2>
-      {pedidos.map((pedido) => (
-        <div key={pedido.id}>
-          <h3>Pedido #{pedido.id}</h3>
-          {/* Asume que `pedido.productIds` contiene los IDs de los productos y necesitas otra forma de mostrar detalles */}
-          <p>Productos en el pedido no disponibles para visualización detallada</p>
-          <button onClick={() => deletePedido(pedido.id)}>Eliminar Pedido</button>
+      
+      {pedidos.length === 0 ? (
+        <div className="carrito-vacio">
+          <p>No hay productos en el carrito</p>
         </div>
-      ))}
-      <div>
-        <h3>Total: ${total}</h3>
-        <button onClick={handleRealizarOrden}>Realizar Orden</button>
-      </div>
+      ) : (
+        <>
+          {pedidos.map((pedido) => {
+            const calificacion = getCalificacionByPedido(pedido.id);
+            return (
+              <div key={pedido.id} className="pedido-item">
+                <h3>Pedido #{pedido.id}</h3>
+                <p>Productos en el pedido: {pedido.productIds.length}</p>
+                
+                {calificacion ? (
+                  <div className="calificacion-existente">
+                    <p>Ya calificaste este pedido: {calificacion.calificacion}/5 ⭐</p>
+                    <p>Comentario: {calificacion.comentario}</p>
+                  </div>
+                ) : (
+                  <button 
+                    className="btn-calificar-pedido"
+                    onClick={() => handleCalificarPedido(pedido)}
+                  >
+                    Calificar Pedido
+                  </button>
+                )}
+                
+                <button 
+                  className="btn-eliminar"
+                  onClick={() => deletePedido(pedido.id)}
+                >
+                  Eliminar Pedido
+                </button>
+              </div>
+            );
+          })}
+          
+          <div className="carrito-total">
+            <h3>Total: ${total}</h3>
+            <button 
+              className="btn-realizar-orden"
+              onClick={handleRealizarOrden}
+            >
+              Realizar Orden
+            </button>
+          </div>
+        </>
+      )}
+
+      {showCalificacion && (
+        <CalificacionServicio
+          pedidoId={pedidoSeleccionado?.id}
+          onCalificacionCompletada={handleCalificacionCompletada}
+          onCerrar={handleCerrarCalificacion}
+        />
+      )}
     </div>
   );
 }
