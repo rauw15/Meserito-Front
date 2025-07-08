@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useProduct } from '../src/auth/ProductProvider';
 import { usePedido } from '../src/auth/PedidoProvider';
+import { enviarPedidoRobotRequest } from '../src/api/request';
 import '../src/assets/styles/RegistrarPedido.css';
 
 function RegistrarPedido() {
@@ -35,14 +36,22 @@ function RegistrarPedido() {
       return;
     }
     try {
+      // 1. Registrar pedido en backend
       await createPedido({
         productIds: productos.flatMap(p => Array(p.cantidad).fill(p.productId)),
         status: 'pendiente',
       });
-      setMensaje('¡Pedido registrado con éxito!');
+      // 2. Enviar pedido al robot mesero
+      await enviarPedidoRobotRequest({
+        productos: productos.map(p => ({
+          id: p.productId,
+          cantidad: p.cantidad
+        }))
+      });
+      setMensaje('¡Pedido registrado y enviado al robot mesero!');
       setSeleccionados([]);
     } catch (error) {
-      setMensaje('Error al registrar el pedido. Intenta de nuevo.');
+      setMensaje('Error al registrar o enviar el pedido. Intenta de nuevo.');
     } finally {
       setEnviando(false);
     }
