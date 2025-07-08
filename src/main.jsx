@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AuthProvider from './auth/AuthProvider';
 import ProductProvider from './auth/ProductProvider';
 import { PedidoProvider } from './auth/PedidoProvider';
+import { CalificacionProvider } from './auth/CalificacionProvider';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -20,6 +21,7 @@ import UploadProduct from './components/organims/UploadProducts/Section';
 import Carrito from './pages/Ordenar'; 
 import ChatuserPage from './pages/Websocket';
 import ChatAdminPage from './pages/Chatadmin';
+import HistorialCalificacionesPage from './pages/HistorialCalificaciones';
 
 const router = createBrowserRouter([
   {
@@ -86,15 +88,21 @@ const router = createBrowserRouter([
     path: '/ChatAdmin',
     element: <ChatAdminPage/>
   },
+  {
+    path: '/historial-calificaciones',
+    element: <HistorialCalificacionesPage/>
+  },
 ]);
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>
-    <ProductProvider>
-      <PedidoProvider>
-        <RouterProvider router={router}/>
-      </PedidoProvider>
+      <ProductProvider>
+        <PedidoProvider>
+          <CalificacionProvider>
+            <RouterProvider router={router}/>
+          </CalificacionProvider>
+        </PedidoProvider>
       </ProductProvider>
     </AuthProvider>
   </React.StrictMode>,

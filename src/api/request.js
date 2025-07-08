@@ -70,3 +70,18 @@ export const returnRequest = () =>
 export const checkDistanceRequest = () =>
   axios.post(`${API}/api/robot/check_distance`, { action: 'check_distance' });
 
+// Rutas de calificaciones
+export const crearCalificacionRequest = (calificacionData) =>
+  axios.post(`${API}/calificaciones/create`, calificacionData);
+
+export const actualizarCalificacionRequest = (calificacionId, calificacionData) =>
+  axios.put(`${API}/calificaciones/update/${calificacionId}`, calificacionData);
+
+export const borrarCalificacionRequest = (calificacionId) =>
+  axios.delete(`${API}/calificaciones/delete/${calificacionId}`);
+
+export const obtenerCalificacionesRequest = () =>
+  axios.get(`${API}/calificaciones/getAll`);
+
+export const obtenerCalificacionPorPedidoRequest = (pedidoId) =>
+  axios.get(`${API}/calificaciones/getByPedido/${pedidoId}`);
