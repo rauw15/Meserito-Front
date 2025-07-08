@@ -23,6 +23,7 @@ import ChatuserPage from './pages/Websocket';
 import ChatAdminPage from './pages/Chatadmin';
 import HistorialCalificacionesPage from './pages/HistorialCalificaciones';
 import ConfirmacionPedidoPage from './pages/ConfirmacionPedido';
+import RegistrarPedido from '../app_cliente/RegistrarPedido';
 
 const router = createBrowserRouter([
   {
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
   {
     path: '/confirmacion-pedido',
     element: <ConfirmacionPedidoPage/>
+  },
+  {
+    path: '/registrar-pedido',
+    element: <RegistrarPedido/>
   },
 ]);
 
